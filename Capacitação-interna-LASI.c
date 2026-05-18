@@ -65,8 +65,8 @@ void buscar_contato() {
     printf("Digite o nome do contato a ser buscado: ");
     fgets(nome, sizeof(nome), stdin);
     nome[strcspn(nome, "\n")] = '\0'; // Remover a nova linha
-
-    for (int i = 0; i < num_contatos; i++) {
+    int i;
+    for (i = 0; i < num_contatos; i++) {
         if (strcmp(agenda[i].nome, nome) == 0) {
             printf("Contato encontrado:\n");
             printf("Nome: %s\n", agenda[i].nome);
@@ -79,14 +79,66 @@ void buscar_contato() {
 
 // Função para editar um contato.
 void editar_contato() {
+    limpar_terminal();
+    char nome[50];
+    printf("Digite o nome do contato a ser editado: ");
+    fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] = '\0'; // Remover a nova linha
+    int i;
+    for (i = 0; i < num_contatos; i++) {
+        if (strcmp(agenda[i].nome, nome) == 0) {
+            printf("Digite o novo nome do contato: ");
+            fgets(agenda[i].nome, sizeof(agenda[i].nome), stdin);
+            agenda[i].nome[strcspn(agenda[i].nome, "\n")] = '\0'; // Remover a nova linha
+
+            printf("Digite o novo telefone do contato: ");
+            fgets(agenda[i].telefone, sizeof(agenda[i].telefone), stdin);
+            agenda[i].telefone[strcspn(agenda[i].telefone, "\n")] = '\0'; // Remover a nova linha
+
+            printf("Contato editado com sucesso!\n");
+            return;
+        }
+    }
+    printf("Contato não encontrado.\n");
 }
 
 // Função para remover um contato.
 void remover_contato() {
+    limpar_terminal();
+    char nome[50];
+    printf("Digite o nome do contato a ser removido: ");
+    fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] = '\0'; // Remover a nova linha
+    int i;
+    for (i = 0; i < num_contatos; i++) {
+        if (strcmp(agenda[i].nome, nome) == 0) {
+            // Shift dos contatos para remover o contato encontrado
+            int j;
+            for (j = i; j < num_contatos - 1; j++) {
+                agenda[j] = agenda[j + 1];
+            }
+            num_contatos--;
+            printf("Contato removido com sucesso!\n");
+            return;
+        }
+    }
+    printf("Contato não encontrado.\n");
 }
 
 // Função para listar os contatos.
 void listar_contatos() {
+    limpar_terminal();
+    if (num_contatos == 0) {
+        printf("Nenhum contato na agenda.\n");
+    } else {
+        printf("Lista de Contatos:\n");
+        int i;
+        for (i = 0; i < num_contatos; i++) {
+            printf("Nome: %s\n", agenda[i].nome);
+            printf("Telefone: %s\n", agenda[i].telefone);
+            printf("--------------------\n");
+        }
+    }
 }
 
 // Função principal.
@@ -101,7 +153,7 @@ int main() {
         printf("4. Remover Contato\n");
         printf("5. Listar Contatos\n");
         printf("0. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         getchar(); // Limpar o buffer de entrada
 
@@ -125,7 +177,7 @@ int main() {
                 printf("Saindo...\n");
                 break;
             default:
-                printf("Opção inválida, Tente novamente.\n");
+                printf("Opcao invalida, Tente novamente.\n");
         }
     } while (opcao != 0);
 
