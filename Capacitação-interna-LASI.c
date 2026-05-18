@@ -32,12 +32,49 @@ typedef struct {
 Contato agenda[MAX_CONTATOS];
 int num_contatos = 0;
 
+// Função para limpar o terminal
+void limpar_terminal() {
+#ifdef _WIN32
+    system("cls");
+#endif
+}
+
 // Função para adicionar um contato.
 void adicionar_contato() {
+    limpar_terminal();
+    if (num_contatos < MAX_CONTATOS) {
+        printf("Digite o nome do contato: ");
+        fgets(agenda[num_contatos].nome, sizeof(agenda[num_contatos].nome), stdin);
+        agenda[num_contatos].nome[strcspn(agenda[num_contatos].nome, "\n")] = '\0'; // Remover a nova linha
+
+        printf("Digite o telefone do contato: ");
+        fgets(agenda[num_contatos].telefone, sizeof(agenda[num_contatos].telefone), stdin);
+        agenda[num_contatos].telefone[strcspn(agenda[num_contatos].telefone, "\n")] = '\0'; // Remover a nova linha
+
+        num_contatos++;
+        printf("Contato adicionado com sucesso!\n");
+    } else {
+        printf("Agenda cheia! Não é possível adicionar mais contatos.\n");
+    }
 }
 
 // Função para buscar um contato.
 void buscar_contato() {
+    limpar_terminal();
+    char nome[50];
+    printf("Digite o nome do contato a ser buscado: ");
+    fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] = '\0'; // Remover a nova linha
+
+    for (int i = 0; i < num_contatos; i++) {
+        if (strcmp(agenda[i].nome, nome) == 0) {
+            printf("Contato encontrado:\n");
+            printf("Nome: %s\n", agenda[i].nome);
+            printf("Telefone: %s\n", agenda[i].telefone);
+            return;
+        }
+    }
+    printf("Contato não encontrado.\n");
 }
 
 // Função para editar um contato.
@@ -88,7 +125,7 @@ int main() {
                 printf("Saindo...\n");
                 break;
             default:
-                printf("Opção inválida! Tente novamente.\n");
+                printf("Opção inválida, Tente novamente.\n");
         }
     } while (opcao != 0);
 
