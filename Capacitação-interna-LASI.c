@@ -43,6 +43,48 @@ void confirmar() {
     printf("Pressione Enter para continuar...");
     getchar();
 }
+// função de salvar os contatos em um arquivo
+void salvar_contatos() {
+    FILE *arquivo = fopen("agenda.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para salvar os contatos.\n");
+        return;
+    }
+    int i;
+    for (i = 0; i < num_contatos; i++) {
+        fprintf(arquivo, "%s,%s\n", agenda[i].nome, agenda[i].telefone);
+    }
+    fclose(arquivo);
+}
+
+// função de carregar os contatos de um arquivo
+void carregar_contatos() {
+    FILE *arquivo = fopen("agenda.txt", "r");
+    if (arquivo == NULL) {
+        printf("Nenhum arquivo de contatos encontrado. Iniciando com uma agenda vazia.\n");
+        return;
+    }
+    char linha[100];
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        if (num_contatos < MAX_CONTATOS) {
+            char *token = strtok(linha, ",");
+            if (token != NULL) {
+                strncpy(agenda[num_contatos].nome, token, sizeof(agenda[num_contatos].nome));
+                token = strtok(NULL, ",");
+                if (token != NULL) {
+                    strncpy(agenda[num_contatos].telefone, token, sizeof(agenda[num_contatos].telefone));
+                    // Remover o caractere de nova linha do telefone
+                    agenda[num_contatos].telefone[strcspn(agenda[num_contatos].telefone, "\n")] = '\0';
+                    num_contatos++;
+                }
+            }
+        } else {
+            printf("Limite de contatos atingido. Alguns contatos podem não ter sido carregados.\n");
+            break;
+        }
+    }
+    fclose(arquivo);
+}
 
 // Função para adicionar um contato.
 void adicionar_contato() {
@@ -104,7 +146,7 @@ void editar_contato() {
             agenda[i].telefone[strcspn(agenda[i].telefone, "\n")] = '\0';   
 
             printf("Contato editado com sucesso!\n");
-            confirmar();
+            
             return;
         }
     }
@@ -157,6 +199,7 @@ void listar_contatos() {
 // Função principal.
 int main() {
     int opcao;
+    carregar_contatos();
 
     do {
         limpar_terminal();
@@ -189,6 +232,7 @@ int main() {
                 break;
             case 0:
                 printf("Saindo...\n");
+                salvar_contatos();
                 break;
             default:
                 printf("Opcao invalida, Tente novamente.\n");
