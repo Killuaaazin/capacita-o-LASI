@@ -50,11 +50,11 @@ void adicionar_contato() {
     if (num_contatos < MAX_CONTATOS) {
         printf("Digite o nome do contato: ");
         fgets(agenda[num_contatos].nome, sizeof(agenda[num_contatos].nome), stdin);
-        agenda[num_contatos].nome[strcspn(agenda[num_contatos].nome, "\n")] = '\0'; 
+        agenda[num_contatos].nome[strcspn(agenda[num_contatos].nome, "\n")] = '\0';     
 
         printf("Digite o telefone do contato: ");
         fgets(agenda[num_contatos].telefone, sizeof(agenda[num_contatos].telefone), stdin);
-        agenda[num_contatos].telefone[strcspn(agenda[num_contatos].telefone, "\n")] = '\0'; 
+        agenda[num_contatos].telefone[strcspn(agenda[num_contatos].telefone, "\n")] = '\0';     
 
         num_contatos++;
         printf("Contato adicionado com sucesso!\n");
@@ -70,13 +70,14 @@ void buscar_contato() {
     char nome[50];
     printf("Digite o nome do contato a ser buscado: ");
     fgets(nome, sizeof(nome), stdin);
-    nome[strcspn(nome, "\n")] = '\0'; 
+    nome[strcspn(nome, "\n")] = '\0';   
     int i;
     for (i = 0; i < num_contatos; i++) {
         if (strcmp(agenda[i].nome, nome) == 0) {
             printf("Contato encontrado:\n");
             printf("Nome: %s\n", agenda[i].nome);
             printf("Telefone: %s\n", agenda[i].telefone);
+            confirmar();
             return;
         }
     }
@@ -90,19 +91,20 @@ void editar_contato() {
     char nome[50];
     printf("Digite o nome do contato a ser editado: ");
     fgets(nome, sizeof(nome), stdin);
-    nome[strcspn(nome, "\n")] = '\0'; 
+    nome[strcspn(nome, "\n")] = '\0';   
     int i;
     for (i = 0; i < num_contatos; i++) {
         if (strcmp(agenda[i].nome, nome) == 0) {
             printf("Digite o novo nome do contato: ");
             fgets(agenda[i].nome, sizeof(agenda[i].nome), stdin);
-            agenda[i].nome[strcspn(agenda[i].nome, "\n")] = '\0'; 
+            agenda[i].nome[strcspn(agenda[i].nome, "\n")] = '\0';   
 
             printf("Digite o novo telefone do contato: ");
             fgets(agenda[i].telefone, sizeof(agenda[i].telefone), stdin);
-            agenda[i].telefone[strcspn(agenda[i].telefone, "\n")] = '\0'; 
+            agenda[i].telefone[strcspn(agenda[i].telefone, "\n")] = '\0';   
 
             printf("Contato editado com sucesso!\n");
+            confirmar();
             return;
         }
     }
@@ -116,7 +118,7 @@ void remover_contato() {
     char nome[50];
     printf("Digite o nome do contato a ser removido: ");
     fgets(nome, sizeof(nome), stdin);
-    nome[strcspn(nome, "\n")] = '\0'; 
+    nome[strcspn(nome, "\n")] = '\0';   
     int i;
     for (i = 0; i < num_contatos; i++) {
         if (strcmp(agenda[i].nome, nome) == 0) {
@@ -127,6 +129,7 @@ void remover_contato() {
             }
             num_contatos--;
             printf("Contato removido com sucesso!\n");
+            confirmar();
             return;
         }
     }
