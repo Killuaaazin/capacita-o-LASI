@@ -43,7 +43,7 @@ void confirmar() {
     printf("Pressione Enter para continuar...");
     getchar();
 }
-// função de salvar os contatos em um arquivo
+// Função de salvar os contatos em um arquivo
 void salvar_contatos() {
     FILE *arquivo = fopen("agenda.txt", "w");
     if (arquivo == NULL) {
@@ -57,7 +57,7 @@ void salvar_contatos() {
     fclose(arquivo);
 }
 
-// função de carregar os contatos de um arquivo
+// Função de carregar os contatos de um arquivo
 void carregar_contatos() {
     FILE *arquivo = fopen("agenda.txt", "r");
     if (arquivo == NULL) {
@@ -70,11 +70,13 @@ void carregar_contatos() {
             char *token = strtok(linha, ",");
             if (token != NULL) {
                 strncpy(agenda[num_contatos].nome, token, sizeof(agenda[num_contatos].nome));
+                // Remover possíveis caracteres que atrapalhem do nome 
+                agenda[num_contatos].nome[strcspn(agenda[num_contatos].nome, "\r\n")] = '\0';
                 token = strtok(NULL, ",");
                 if (token != NULL) {
                     strncpy(agenda[num_contatos].telefone, token, sizeof(agenda[num_contatos].telefone));
-                    // Remover o caractere de nova linha do telefone
-                    agenda[num_contatos].telefone[strcspn(agenda[num_contatos].telefone, "\n")] = '\0';
+                    // Remover possíveis caracteres que atrapalhem do telefone 
+                    agenda[num_contatos].telefone[strcspn(agenda[num_contatos].telefone, "\r\n")] = '\0';
                     num_contatos++;
                 }
             }
@@ -137,6 +139,7 @@ void editar_contato() {
     int i;
     for (i = 0; i < num_contatos; i++) {
         if (strcmp(agenda[i].nome, nome) == 0) {
+            
             printf("Digite o novo nome do contato: ");
             fgets(agenda[i].nome, sizeof(agenda[i].nome), stdin);
             agenda[i].nome[strcspn(agenda[i].nome, "\n")] = '\0';   
@@ -146,7 +149,9 @@ void editar_contato() {
             agenda[i].telefone[strcspn(agenda[i].telefone, "\n")] = '\0';   
 
             printf("Contato editado com sucesso!\n");
-            
+
+            salvar_contatos();
+            confirmar();
             return;
         }
     }
