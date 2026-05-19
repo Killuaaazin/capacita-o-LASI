@@ -4,7 +4,11 @@ Meu código tem a função de ser uma agenda de contatos simples, com as funçõ
 * buscar contatos
 * editar contatos
 * remover contatos
-* listar contatos
+* listar contatos 
+
+
+
+
 Foram separados essas funções e depois juntadas todas em um swtich para ser o menu principal desse programa.
 E foi usado uma struct para os dados dos contatos, visto que é mais fácil guardar dados diferentes assim, sendo os dados nome e telefone guardados em formato char.
 O maximo de contatos pode ser escolhido dentro do codigo principal no define MAX-CONTATOS
